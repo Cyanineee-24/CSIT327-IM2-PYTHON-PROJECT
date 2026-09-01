@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Directory</title>
+    <style>
+        :root {
+            --primary-color: #8a1538; /* Maroon accent */
+            --secondary-color: #fdb913; /* Gold accent */
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #6c757d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-bottom: 6px solid var(--secondary-color);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            margin: 0.5rem 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* The Grid System for the Cards */
+        .directory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Individual Student Card Styling */
+        .student-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--primary-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .student-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        .student-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0 0 1rem 0;
+            color: var(--primary-color);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        .student-detail {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            background: white;
+            border-radius: 10px;
+            grid-column: 1 / -1;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .empty-state a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>College of Computer Studies</h1>
+        <p>Official Student Directory</p>
+    </div>
+
+    <div class="container">
+        <div class="directory-grid">
+            
+            <!-- Django Template Loop Starts Here -->
+            {% for student in students %}
+                <div class="student-card">
+                    <h2 class="student-name">{{ student.first_name }} {{ student.last_name }}</h2>
+                    
+                    <!-- 
+                    Note: I added course and email here as examples. 
+                    If you don't have these in your models.py, Django will just ignore them,
+                    or you can swap them out for the exact fields you did create! 
+                    -->
+                    <p class="student-detail">🎓 <strong>Program:</strong> {{ student.course|default:"Not specified" }}</p>
+                    <p class="student-detail">✉️ <strong>Email:</strong> {{ student.email|default:"No email on file" }}</p>
+                </div>
+                
+            {% empty %}
+                <div class="empty-state">
+                    <h2>No Students Found</h2>
+                    <p>The roster is currently empty. Head over to the <a href="/admin/">admin dashboard</a> to register new students!</p>
+                </div>
+            {% endfor %}
+            
+        </div>
+    </div>
+
+</body>
+</html>
